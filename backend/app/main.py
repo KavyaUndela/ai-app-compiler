@@ -18,6 +18,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root() -> dict[str, str]:
+    return {
+        "status": "success",
+        "message": "AI Application Compiler API Running",
+        "docs": "/docs",
+    }
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
