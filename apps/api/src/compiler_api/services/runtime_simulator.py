@@ -33,13 +33,14 @@ class RuntimeSimulatorService:
         navigation = self._build_navigation(generated, crud_pages)
         previews = self._build_previews(generated, crud_pages)
 
+        # Use fixed generated_at for deterministic simulation outputs
         report = RuntimeSimulationReport(
-            generated_at=datetime.now(timezone.utc),
+            generated_at=datetime.fromtimestamp(0, timezone.utc),
             summary=f"Rendered {len(forms)} forms, {len(crud_pages)} CRUD pages, and {len(navigation)} navigation items.",
             forms=forms,
             crud_pages=crud_pages,
             navigation=navigation,
-            runtime_previews=previews,
+            previews=previews,
             deterministic_fingerprint="0" * 64,
         )
         fingerprint = self._fingerprint(generated, report)
@@ -228,11 +229,16 @@ class RuntimeSimulatorService:
         return table.name in INTERNAL_TABLES
 
     def _fingerprint(self, generated: GeneratedSchemas, report: RuntimeSimulationReport) -> str:
+        # Exclude non-deterministic report fields (generated_at, deterministic_fingerprint)
+        report_dump = report.model_dump(mode="json")
+        report_dump.pop("generated_at", None)
+        report_dump.pop("deterministic_fingerprint", None)
+
         payload = {
             "database": generated.database.model_dump(mode="json"),
             "api": generated.api.model_dump(mode="json"),
             "ui": generated.ui.model_dump(mode="json"),
             "auth": generated.auth.model_dump(mode="json"),
-            "report": report.model_dump(mode="json"),
+            "report": report_dump,
         }
         return sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()

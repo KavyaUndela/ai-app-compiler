@@ -43,6 +43,11 @@ class RuntimeFormSchema(StrictBaseModel):
         ensure_unique_values(field_names, "fields")
         return self
 
+    @property
+    def table_name(self) -> str:
+        """Backward-compatible alias for `resource` field."""
+        return self.resource
+
 
 class RuntimeCrudPageSchema(StrictBaseModel):
     name: str = Field(min_length=1, max_length=120)
@@ -59,6 +64,11 @@ class RuntimeCrudPageSchema(StrictBaseModel):
         set_field_value(self, "operations", ensure_non_empty_strings(self.operations, "operations"))
         return self
 
+    @property
+    def table_name(self) -> str:
+        """Backward-compatible alias for `resource` or `source_table`."""
+        return self.source_table or self.resource
+
 
 class RuntimeNavigationSchema(StrictBaseModel):
     label: str = Field(min_length=1, max_length=120)
@@ -70,6 +80,11 @@ class RuntimeNavigationSchema(StrictBaseModel):
     def validate_navigation(self) -> "RuntimeNavigationSchema":
         set_field_value(self, "visible_to_roles", ensure_unique_values(self.visible_to_roles, "visible_to_roles"))
         return self
+
+    @property
+    def kind(self) -> str:
+        """Backward-compatible computed kind for navigation items."""
+        return "ui-page"
 
 
 class RuntimePreviewSchema(StrictBaseModel):
@@ -86,6 +101,11 @@ class RuntimePreviewSchema(StrictBaseModel):
         set_field_value(self, "actions", ensure_unique_values(self.actions, "actions"))
         set_field_value(self, "notes", ensure_unique_values(self.notes, "notes"))
         return self
+
+    @property
+    def preview_kind(self) -> str:
+        """Backward-compatible alias for `preview_type`."""
+        return self.preview_type
 
 
 class RuntimeSimulationReport(StrictBaseModel):
@@ -108,3 +128,8 @@ class RuntimeSimulationReport(StrictBaseModel):
         ensure_unique_values(preview_titles, "previews")
         ensure_unique_values(nav_labels, "navigation")
         return self
+
+    @property
+    def runtime_previews(self) -> list[RuntimePreviewSchema]:
+        """Backward-compatible alias for `previews` field."""
+        return self.previews
