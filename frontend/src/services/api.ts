@@ -1,10 +1,16 @@
 import axios from 'axios'
 import { CompilationResult } from '@/types'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+// Prefer an explicit API URL when provided. In development default to localhost,
+// but in production use same-origin (empty string) so the app talks to the
+// host that served the frontend (avoids Not Found when deployed behind a host).
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ??
+  (process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : '')
 
 const api = axios.create({
-  baseURL: API_URL,
+  // If API_URL is an empty string, axios will use relative requests (same-origin).
+  baseURL: API_URL || undefined,
   headers: {
     'Content-Type': 'application/json',
   },
