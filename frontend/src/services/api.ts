@@ -1,16 +1,16 @@
 import axios from 'axios'
 import { CompilationResult } from '@/types'
 
-// Prefer an explicit API URL when provided. In development default to localhost,
-// but in production use same-origin (empty string) so the app talks to the
-// host that served the frontend (avoids Not Found when deployed behind a host).
+// Prefer an explicit API URL when provided. In development default to localhost.
+// In production, if no env var is set, fall back to the deployed backend host.
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ??
-  (process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : '')
+  (process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8000'
+    : 'https://ai-app-compiler-7-lxn4.onrender.com')
 
 const api = axios.create({
-  // If API_URL is an empty string, axios will use relative requests (same-origin).
-  baseURL: API_URL || undefined,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
