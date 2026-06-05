@@ -1,13 +1,9 @@
 import axios from 'axios'
 import { CompilationResult } from '@/types'
 
-// Prefer an explicit API URL when provided. In development default to localhost.
-// In production, if no env var is set, fall back to the deployed backend host.
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ??
-  (process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8000'
-    : 'https://ai-app-compiler-7-lxn4.onrender.com')
+// Prefer an explicit API URL when provided. If not set, always use the
+// deployed backend host (no localhost fallback).
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'https://ai-app-compiler-7-lxn4.onrender.com'
 
 const api = axios.create({
   baseURL: API_URL,
