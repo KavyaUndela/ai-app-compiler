@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/", methods=["GET", "HEAD"])
 async def root() -> dict[str, str]:
     return {
         "status": "success",
