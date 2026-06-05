@@ -3,10 +3,21 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useAuthStore } from '@/stores/authStore'
+import { useEffect } from 'react'
 
 export default function Navbar() {
   const router = useRouter()
   const { user, token, logout } = useAuthStore()
+
+  useEffect(() => {
+    // Debug: log auth state to help diagnose UI not updating after login
+    try {
+      // eslint-disable-next-line no-console
+      console.debug('[Navbar] auth state', { user, token })
+    } catch (e) {
+      // ignore
+    }
+  }, [user, token])
 
   const handleLogout = () => {
     logout()

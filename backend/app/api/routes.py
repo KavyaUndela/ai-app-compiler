@@ -21,6 +21,7 @@ from app.models import (
     ValidationResult,
     RepairResult,
 )
+from fastapi import status
 from app.services.intent_extraction import extract_intent
 from app.services.system_design import generate_design
 from app.services.schema_generator import generate_schema
@@ -173,3 +174,44 @@ def list_compilations(limit: int = 10) -> dict:
             for item in items
         ],
     }
+
+
+# --- Minimal auth endpoints to satisfy frontend during local development ---
+class SignupRequest(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    name: str
+    email: str
+    password: str
+
+
+class SigninRequest(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    email: str
+    password: str
+
+
+@router.post("/auth/signup", status_code=status.HTTP_201_CREATED)
+def signup(payload: SignupRequest) -> dict:
+    # NOTE: This is a lightweight stub for local development only.
+    # In production this should create a user, hash the password,
+    # and return an auth token.
+    user = {"name": payload.name, "email": payload.email}
+    return {"user": user, "token": "dev-token"}
+
+
+@router.post("/auth/signin")
+def signin(payload: SigninRequest) -> dict:
+    # Lightweight stub: always succeed and return a fake token.
+    # For demo: echo back a user object and token expected by frontend
+    user = {"name": "Demo User", "email": payload.email}
+    return {"user": user, "token": "dev-token"}
+
+
+@router.get("/auth/me")
+def me(token: str = None) -> dict:
+    # Very small demo: accept the hard-coded dev-token and return a user
+    if token != "dev-token":
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return {"user": {"name": "Demo User", "email": "test@example.com"}}
