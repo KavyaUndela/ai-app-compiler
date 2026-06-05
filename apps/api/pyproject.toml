@@ -1,0 +1,19 @@
+[project]
+name = "compiler_api"
+version = "0.1.0"
+description = "AI Application Compiler - backend"
+
+[project.dependencies]
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+pydantic = ">=2.0"
+sqlalchemy = "*"
+asyncpg = "*"
+alembic = "*"
+python-dotenv = "*"
+celery = {extras = ["redis"], version = "*"}
+httpx = "*"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
