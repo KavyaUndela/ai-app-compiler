@@ -23,6 +23,15 @@ def create_app() -> FastAPI:
     
     app.include_router(runtime_router)
     app.include_router(auth_router)
+
+    @app.get("/")
+    async def root() -> dict[str, str]:
+        return {
+            "status": "success",
+            "message": "AI Application Compiler API Running",
+            "docs": "/docs"
+        }
+
     return app
 
 
