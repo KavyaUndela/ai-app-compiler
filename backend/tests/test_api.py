@@ -12,7 +12,7 @@ client = TestClient(app)
 
 
 def test_health_endpoint() -> None:
-    response = client.get('/health')
+    response = client.get('/api/health')
     assert response.status_code == 200
     payload = response.json()
     assert payload['status'] == 'healthy'
@@ -21,7 +21,7 @@ def test_health_endpoint() -> None:
 
 def test_generate_endpoint_returns_completed_compilation() -> None:
     response = client.post(
-        '/generate',
+        '/api/generate',
         json={
             'prompt': 'Build a CRM with login, contacts, dashboard, role-based access, premium plans and payments.'
         },
@@ -38,16 +38,15 @@ def test_generate_endpoint_returns_completed_compilation() -> None:
 
 def test_validate_and_preview_endpoints() -> None:
     generated = client.post(
-        '/generate',
+        '/api/generate',
         json={
             'prompt': 'Build a CRM with login, contacts, dashboard, role-based access, premium plans and payments.'
         },
     ).json()
-
-    validate_response = client.post('/validate', json=generated['schema'])
+    validate_response = client.post('/api/validate', json=generated['schema'])
     assert validate_response.status_code == 200
     assert validate_response.json()['is_valid'] is True
 
-    preview_response = client.post('/runtime-preview', json={'schema': generated['schema']})
+    preview_response = client.post('/api/runtime-preview', json={'schema': generated['schema']})
     assert preview_response.status_code == 200
     assert preview_response.json()['dynamic_forms']
