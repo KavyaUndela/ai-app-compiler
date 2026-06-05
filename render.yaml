@@ -1,0 +1,17 @@
+# Render service manifest (example). This file can be used by Render's
+# Infrastructure as Code to define services. It also documents a Docker
+# deployment that intentionally uses a fresh build (no remote cache).
+
+# Note: Render's dashboard may still attempt to import build cache. If you
+# want to force a no-cache build in Render, clear the build cache from the
+# Deploys page or run the provided local no-cache build script.
+
+services:
+  - type: web
+    name: ai-app-compiler
+    env: docker
+    dockerfilePath: Dockerfile
+    # If your Render account uses a specific plan, set it here (example: free)
+    plan: free
+    # The following start command is used by Render when launching the container
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
