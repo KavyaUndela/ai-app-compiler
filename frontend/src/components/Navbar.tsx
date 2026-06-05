@@ -25,7 +25,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-slate-900/10 bg-slate-950/95 backdrop-blur-xl text-white">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-slate-900/10 bg-slate-950/95 text-white">
       <div className="container flex h-20 items-center justify-between">
         <Link href="/" className="flex items-center gap-3 font-semibold text-xl tracking-tight">
           <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-300 shadow-lg shadow-cyan-500/10">AI</span>

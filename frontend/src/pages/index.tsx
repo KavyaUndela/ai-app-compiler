@@ -47,7 +47,7 @@ export default function LandingPage() {
         <div className="absolute bottom-[-10rem] left-[28%] h-[22rem] w-[22rem] rounded-full bg-emerald-500/10 blur-3xl" />
       </div>
 
-      <header className="relative border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+      <header className="relative border-b border-white/5 bg-slate-950/80">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-500/10 text-sm font-bold text-cyan-300 ring-1 ring-cyan-400/20">
@@ -104,7 +104,7 @@ export default function LandingPage() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               {quickStats.map((item) => (
-                <div key={item.label} className="rounded-3xl border border-white/8 bg-white/5 p-5 shadow-xl shadow-black/10 backdrop-blur">
+                <div key={item.label} className="rounded-3xl border border-white/8 bg-white/5 p-5 shadow-xl shadow-black/10">
                   <div className="text-3xl font-semibold text-white">{item.value}</div>
                   <p className="mt-2 text-sm text-slate-400">{item.label}</p>
                 </div>
@@ -127,7 +127,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div id="composer" className="rounded-[2rem] border border-white/8 bg-white/5 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-8">
+          <div id="composer" className="rounded-[2rem] border border-white/8 bg-white/5 p-6 shadow-2xl shadow-black/20 sm:p-8">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="text-xs uppercase tracking-[0.28em] text-slate-500">Prompt composer</div>

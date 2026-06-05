@@ -49,7 +49,7 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen bg-slate-950 pb-16 pt-24 text-slate-100">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-2xl rounded-[2rem] bg-slate-900/90 p-10 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+        <div className="mx-auto max-w-2xl rounded-[2rem] bg-slate-900/90 p-10 shadow-2xl shadow-slate-950/40">
           <div className="mb-8">
             <h1 className="text-4xl font-semibold">Sign up</h1>
             <p className="mt-3 text-slate-400">Create your account and start building AI-driven applications.</p>

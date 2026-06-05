@@ -37,7 +37,7 @@ body {
   }
 
   .card {
-    @apply bg-white/95 border border-slate-200/70 rounded-[1.75rem] p-6 shadow-2xl shadow-slate-950/10 backdrop-blur-xl;
+    @apply bg-white/95 border border-slate-200/70 rounded-[1.75rem] p-6 shadow-2xl shadow-slate-950/10;
   }
 
   .container {
