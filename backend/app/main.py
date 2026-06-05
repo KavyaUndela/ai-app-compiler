@@ -24,4 +24,6 @@ logger = logging.getLogger(__name__)
 
 # Import routes after app initialization
 from app.api import routes as api_routes
-app.include_router(api_routes.router, tags=["compiler"])
+
+# Mount API under /api to match nginx proxy configuration
+app.include_router(api_routes.router, prefix="/api", tags=["compiler"])
