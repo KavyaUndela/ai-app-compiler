@@ -2,11 +2,13 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# If Railway builds from repo root with Dockerfile at frontend/Dockerfile,
+# package files must be copied from the frontend subfolder.
+COPY frontend/package.json frontend/package-lock.json ./
 
 RUN npm ci
 
-COPY . .
+COPY frontend .
 
 RUN npm run build
 
