@@ -9,6 +9,10 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Service version constant used by the health endpoint
+SERVICE_NAME = "ai-app-compiler"
+SERVICE_VERSION = "1.0.0"
+
 # Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
@@ -18,12 +22,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", methods=["GET", "HEAD"])
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root() -> dict[str, str]:
     return {
         "status": "success",
         "message": "AI Application Compiler API Running",
         "docs": "/docs",
+    }
+
+
+@app.get("/health")
+async def health() -> dict[str, str]:
+    """Production health endpoint suitable for Railway health checks.
+
+    Returns a small JSON payload with service name and version.
+    """
+    return {
+        "status": "healthy",
+        "service": SERVICE_NAME,
+        "version": SERVICE_VERSION,
     }
 
 # Configure logging
