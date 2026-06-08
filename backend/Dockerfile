@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 8000
 
 # Use PORT env provided by Railway; default to 8000 when not set.
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
