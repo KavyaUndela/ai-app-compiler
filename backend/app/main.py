@@ -13,14 +13,34 @@ app = FastAPI(
 SERVICE_NAME = "ai-app-compiler"
 SERVICE_VERSION = "1.0.0"
 
-# Enable CORS for frontend
+# Configure logging before any other setup
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Enable CORS for frontend - permissive for development, can be restricted for production
+cors_origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8080",
+    # Add production URLs here
+    # "https://yourdomain.com",
+]
+
+# Add wildcard for development only (remove in production)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:8080", "*"],
+    allow_origins=cors_origins + ["*"],  # Wildcard for development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+logger.info(f"CORS enabled for origins: {cors_origins}")
 
 @app.api_route("/", methods=["GET", "HEAD"])
 async def root() -> dict[str, str]:
@@ -53,16 +73,19 @@ async def api_health() -> dict[str, str]:
         "version": SERVICE_VERSION,
     }
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 # Import routes after app initialization
 from app.api import routes as api_routes
+
+# Log endpoint registration
+logger.info("Registering API routes...")
 
 # Mount API under both root and /api to support older deployments
 # Root: /generate, /validate, etc. (backwards-compatibility)
 app.include_router(api_routes.router, tags=["compiler"])
+logger.info("Routes registered at root level: /generate, /validate, /repair, /runtime-preview")
 
 # Also expose under /api prefix: /api/generate, /api/validate, ...
 app.include_router(api_routes.router, prefix="/api", tags=["compiler"])
+logger.info("Routes registered under /api prefix: /api/generate, /api/validate, /api/repair, /api/runtime-preview")
+
+logger.info("API initialization complete")

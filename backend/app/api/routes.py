@@ -5,6 +5,7 @@ Root compiler API routes.
 from __future__ import annotations
 
 import uuid
+import logging
 from copy import deepcopy
 from typing import Dict
 
@@ -28,6 +29,9 @@ from app.services.schema_generator import generate_schema
 from app.services.validation_engine import validate_schema
 from app.services.repair_engine import repair_schema
 from app.services.runtime_simulator import generate_runtime_preview
+
+# Setup logger for this module
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -100,7 +104,12 @@ def health() -> dict:
 
 @router.post("/generate", response_model=CompilationResult)
 def generate_configuration(request: GenerateRequest) -> CompilationResult:
+    """Generate application configuration from natural language prompt.
+    
+    Available at both /generate and /api/generate endpoints.
+    """
     try:
+        logger.info(f"Received generate request with prompt: {request.prompt[:100]}...")
         result = _compile(request.prompt)
         compilations_store[result.compilation_id] = result
         metrics_store["generations"] += 1
@@ -108,8 +117,10 @@ def generate_configuration(request: GenerateRequest) -> CompilationResult:
         metrics_store["runtime_previews"] += 1
         if result.repair and result.repair.patches:
             metrics_store["repairs"] += 1
+        logger.info(f"Successfully generated configuration: {result.compilation_id}")
         return result
     except Exception as exc:  # pragma: no cover - route guard
+        logger.error(f"Compilation failed: {exc}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Compilation failed: {exc}") from exc
 
 

@@ -175,7 +175,16 @@ export default function LandingPage() {
                 </Link>
               </div>
 
-              {error && <div className="rounded-3xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200">{error}</div>}
+              {error && (
+                <div className="rounded-3xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200">
+                  <div className="font-semibold mb-2">Error: {error.split('API URL:')[0].trim()}</div>
+                  {error.includes('API URL:') && (
+                    <div className="text-xs text-red-300/80 mt-2 p-2 bg-red-950/30 rounded">
+                      {error}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
