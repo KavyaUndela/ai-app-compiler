@@ -25,3 +25,47 @@ cd frontend
 npm install
 npm run dev
 ```
+
+Railway deployment (suggested)
+
+```
+AI-App-Compiler
+│
+├── frontend/      → Railway Service 1
+│
+├── backend/       → Railway Service 2
+│
+└── PostgreSQL     → Railway Database
+```
+
+Main API Endpoints
+
+```
+POST /generate
+POST /validate
+POST /repair
+POST /runtime-preview
+GET  /metrics
+GET  /health
+```
+
+Core Pipeline
+
+```
+User Prompt
+	↓
+Intent Extraction
+	↓
+System Design
+	↓
+Schema Generation
+	↓
+Validation Engine
+	↓
+Repair Engine
+	↓
+Runtime Simulator
+	↓
+Final Executable Configuration
+```
+
