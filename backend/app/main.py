@@ -43,6 +43,16 @@ async def health() -> dict[str, str]:
         "version": SERVICE_VERSION,
     }
 
+
+@app.get("/api/health")
+async def api_health() -> dict[str, str]:
+    """Alias health endpoint under /api for platform checks."""
+    return {
+        "status": "healthy",
+        "service": SERVICE_NAME,
+        "version": SERVICE_VERSION,
+    }
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

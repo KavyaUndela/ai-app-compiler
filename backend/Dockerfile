@@ -12,7 +12,8 @@ WORKDIR /app
 COPY requirements.txt ./
 
 RUN python -m pip install --upgrade pip setuptools wheel \
-    && pip install --no-cache-dir -r requirements.txt
+    && pip install --no-cache-dir -r requirements.txt \
+    && python -m pip cache purge || true
 
 # Copy application code (expecting repository structure: backend/*)
 COPY . .
@@ -20,4 +21,4 @@ COPY . .
 EXPOSE 8000
 
 # Use PORT env provided by Railway; default to 8000 when not set.
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "gunicorn app.main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --workers 2 --timeout 120"]
