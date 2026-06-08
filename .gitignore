@@ -65,6 +65,7 @@ logs/
 
 # Docker
 .dockerignore
+!frontend/.dockerignore
 
 # Testing
 .pytest_cache/
