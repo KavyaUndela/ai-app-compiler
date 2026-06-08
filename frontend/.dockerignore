@@ -11,3 +11,5 @@ yarn-error.log*
 Dockerfile
 .dockerignore
 .env*
+# Ensure package-lock.json remains part of the build context
+!package-lock.json
